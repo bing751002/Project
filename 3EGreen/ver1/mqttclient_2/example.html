@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<!-- saved from url=(0058)http://www.eclipse.org/paho/clients/js/utility/index.html# -->
+<html class="gr__eclipse_org"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Eclipse Paho MQTT JavaScript Client Example</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="./example_files/bootstrap.min.css">
+  <link rel="stylesheet" href="./example_files/bootstrap-theme.min.css">
+  <!-- Custom Styles theme -->
+  <link rel="stylesheet" href="./example_files/style.css">
+</head>
+
+<div class="container">
+    <!-- Nav Bar -->
+    <img src="3egreen1.jpg">
+    <!-- Nav Bar End -->
+
+    <!-- Connection panel -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <span id="connectionStatus">Connection - Disconnected.</span>
+          </div>
+          <div class="panel-body" id="serverCollapse">
+            <form>
+              <div class="row">
+
+                <div class="col-lg-5">
+                  <div class="form-group">
+                    <label for="hostInput">Host</label>
+                    <input type="text" class="form-control" id="hostInput" value="iot.eclipse.org">
+                  </div>
+                </div>
+                <div class="col-lg-1">
+                  <div class="form-group">
+                    <label for="portInput">Port</label>
+                    <input type="text" class="form-control" id="portInput" value="80">
+                  </div>
+
+                </div>
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label for="clientIdInput">Client ID</label>
+                    <input type="text" class="form-control" id="clientIdInput" value="javascript-client">
+                  </div>
+                </div>
+                <div class="col-lg-1">
+                  <div class="form-group">
+                    <label for="clientConnectButton"></label>
+                    <a id="clientConnectButton" class="btn btn-default" onclick="connectionToggle();">Connect</a>
+                  </div>
+                </div>
+              </div>
+                <div class="row">
+
+                <div class="col-lg-2">
+                  <div class="form-group">
+                    <label for="pathInput">Path</label>
+                    <input type="text" class="form-control" id="pathInput" value="/ws">
+                  </div>
+                </div>
+                <div class="col-lg-2">
+                  <div class="form-group">
+                    <label for="userInput">Username</label>
+                    <input type="text" class="form-control" id="userInput">
+                  </div>
+                </div>
+
+                <div class="col-lg-2">
+                  <div class="form-group">
+                    <label for="passInput">Password</label>
+                    <input type="password" class="form-control" id="passInput">
+                  </div>
+                </div>
+
+                <div class="col-lg-2">
+                  <div class="form-group">
+                    <label for="keepAliveInput">Keep-Alive</label>
+                    <input type="text" class="form-control" id="keepAliveInput" value="60">
+                  </div>
+                </div>
+
+                <div class="col-lg-1">
+                  <div class="form-group">
+                    <label for="timeoutInput">Timeout</label>
+                    <input type="text" class="form-control" id="timeoutInput" value="3">
+                  </div>
+                </div>
+
+                <div class="col-lg-1">
+                  <div class="form-group">
+                    <label for="sslInput">SSL</label>
+                    <input type="checkbox" class="special-checkbox" id="sslInput" value="">
+                  </div>
+                </div>
+                <div class="col-lg-2">
+                  <div class="form-group">
+                    <label for="cleanSessionInput">Clean Session</label>
+                    <input type="checkbox" class="special-checkbox" id="cleanSessionInput" value="">
+                  </div>
+
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3">
+                  <div class="form-group">
+                    <label for="lwtInput">Last Will Topic</label>
+                    <input type="text" class="form-control" id="lwtInput">
+                  </div>
+                </div>
+
+                <div class="col-lg-1">
+                  <div class="form-group">
+                    <label for="lwQosInput">QoS</label>
+                    <select class="form-control" id="lwQosInput">
+                      <option>0</option>
+                      <option>1</option>
+                      <option>2</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-1">
+                  <div class="form-group">
+                    <label for="lwRetainInput">Retain</label>
+                    <input type="checkbox" class="special-checkbox" id="lwRetainInput" value="">
+                  </div>
+                </div>
+                <div class="col-lg-7">
+                  <div class="form-group">
+                    <label for="lwMInput">Last Will Message</label>
+                    <textarea class="form-control" id="lwMInput" rows="3" data-gramm="" data-txt_gramm_id="77be7905-7f17-072d-864d-c50feb64b32e"></textarea>
+                  </div>
+                </div>
+              </div>
+          </form></div>
+  <!-- End of Connection panel -->
+
+
+  <div class="row">
+    <!-- Subscription panel -->
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Subscribe
+        </div>
+        <div class="panel-body" id="subscribeCollapse">
+
+          <form class="form-horizontal">
+
+            <div class="form-group">
+              <label for="subscribeTopicInput" class="col-sm-2 control-label">Topic</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="subscribeTopicInput" value="/test" disabled="">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="subscribeQosInput" class="col-sm-2 control-label">QoS</label>
+              <div class="col-sm-10">
+                <select class="form-control" id="subscribeQosInput" disabled="">
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button id="subscribeButton" type="button" class="btn btn-default" onclick="subscribe();" disabled="">Subscribe</button>
+                <button id="unsubscribeButton" type="button" class="btn btn-default" onclick="unsubscribe();" disabled="">Unsubscribe</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- End of Subscription panel -->
+    <!-- Publish panel -->
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Publish Message
+        </div>
+        <div class="panel-body" id="publishCollapse">
+          <form>
+            <div class="row">
+              <div class="col-lg-5">
+                <div class="form-group">
+                  <label for="publishTopicInput">Topic</label>
+                    <input type="text" class="form-control" id="publishTopicInput" value="/test" disabled="">
+                </div>
+              </div>
+              <div class="col-lg-3">
+                <div class="form-group">
+                  <label for="publishQosInput">QoS</label>
+                    <select class="form-control" id="publishQosInput" disabled="">
+                      <option>0</option>
+                      <option>1</option>
+                      <option>2</option>
+                    </select>
+                </div>
+              </div>
+              <div class="col-lg-1">
+                <div class="form-group">
+                  <label for="publishRetainInput">Retain</label>
+                  <input type="checkbox" class="special-checkbox" id="publishRetainInput" value="" disabled="">
+                </div>
+              </div>
+              <div class="col-lg-1">
+                <div class="form-group">
+                  <label for="publishButton"></label>
+                  <button id="publishButton" type="button" class="btn btn-default" onclick="publish();" disabled="">Publish
+                </button></div>
+              </div>
+
+
+            </div>
+
+            <div class="row">
+              <div class="col-lg-12">
+              <div class="form-group">
+                <label for="publishMessageInput">Last Will Message</label>
+                <ghost><div style="position: absolute; color: transparent; overflow: hidden; white-space: pre-wrap; border: 1px solid rgb(204, 204, 204); border-radius: 0px; box-sizing: border-box; height: 74px; width: 523px; z-index: 0; padding: 6px 12px; margin: 0px; top: auto; left: auto; background: none 0% 0% / auto repeat scroll padding-box border-box rgb(255, 255, 255);" data-id="4adf5fbd-e5cf-7348-7829-f755a594e1a3" data-gramm_id="4adf5fbd-e5cf-7348-7829-f755a594e1a3" data-gramm="gramm" data-gramm_editor="true" data-grammarly-reactid=".2" contenteditable="true"><span style="display:inline-block;line-height:20px;color:transparent;overflow:hidden;text-align:left;float:initial;clear:none;box-sizing:border-box;vertical-align:baseline;white-space:pre-wrap;width:100%;margin:0;padding:0;border:0;font:normal normal normal normal 14px / 20px &#39;Helvetica Neue&#39;, Helvetica, Arial, sans-serif;font-size:14px;font-family:&#39;Helvetica Neue&#39;, Helvetica, Arial, sans-serif;letter-spacing:normal;text-shadow:none;height:72px;" data-grammarly-reactid=".2.0"></span><br data-grammarly-reactid=".2.1"></div></ghost><textarea class="form-control" id="publishMessageInput" rows="3" data-gramm="true" data-txt_gramm_id="4adf5fbd-e5cf-7348-7829-f755a594e1a3" data-gramm_id="4adf5fbd-e5cf-7348-7829-f755a594e1a3" spellcheck="false" data-gramm_editor="true" style="z-index: auto; position: relative; line-height: 20px; font-size: 14px; transition: none; overflow: auto; background: transparent !important;"></textarea><div><div style="z-index: 2; opacity: 1; margin-left: 500px; margin-top: 68px;" class="gr-textarea-btn gr-textarea-btn_show " data-grammarly-reactid=".3"><div title="Protected by Grammarly" class="gr-textarea-btn_status" data-grammarly-reactid=".3.0">&nbsp;</div></div></div>
+              </div>
+            </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- End of Publish panel -->
+  </div>
+  <div class="row">
+
+
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <a class="chevron-toggle" data-toggle="collapse" data-target="#subscriptionsCollapse" href="http://www.eclipse.org/paho/clients/js/utility/index.html#collapseOne">
+                        Last Messages
+                    </a>
+        </div>
+        <div class="panel-body collapse in fixed-height-panel" id="subscriptionsCollapse">
+          <table class="table table-hover table-condensed tableSection" id="lastMessageTable">
+            <thead>
+              <tr>
+                <th>Topic</th>
+                <th>Payload</th>
+                <th>Time</th>
+                <th>QoS</th>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="row">
+
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <a class="chevron-toggle" data-toggle="collapse" data-target="#historyCollapse" href="http://www.eclipse.org/paho/clients/js/utility/index.html#collapseOne">
+                        History
+                        </a>
+        </div>
+        <div class="panel-body collapse in fixed-height-panel" id="historyCollapse">
+          <span class="right"><a href="./example_files/example.html" onclick="clearHistory()">Clear History</a></span>
+          <table class="table table-hover table-condensed  tableSection" id="incomingMessageTable">
+
+            <thead>
+              <tr>
+                <th style="width:10%">Topic</th>
+                <th style="width:10%">Payload</th>
+                <th style="width:20%">Time</th>
+                <th style="width:60%">Qos</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Source Paho MQTT Client-->
+  <script src="./example_files/mqttws31.js"></script>
+  <!--<script src="../src/paho-mqtt.js"></script>-->
+
+  <!-- Utility Javascript -->
+  <script src="./example_files/utility.js"></script>
+
+  <!-- Javascript used for Bootstrap Theme -->
+  <script src="./example_files/jquery.min.js"></script>
+  <script src="./example_files/bootstrap.min.js"></script>
+
+
+
+</div></div></body><span class="gr__tooltip"><span class="gr__tooltip-content"></span><i class="gr__tooltip-logo"></i><span class="gr__triangle"></span></span><div><div class="gr_-editor" style="display:none;" data-grammarly-reactid=".0"><div class="gr_-editor_back" data-grammarly-reactid=".0.0"></div><iframe class="gr_-ifr gr-_dialog-content" data-grammarly-reactid=".0.1"></iframe></div></div><grammarly-card><div style="top:0;left:0;visibility:hidden;" class="gr-grammar-card" data-grammarly-reactid=".1"><span style="margin-left:0;" class="gr-grammar-card_triangle" data-grammarly-reactid=".1.0"></span><div class="gr-grammar-card_footer" data-grammarly-reactid=".1.4"><div class="gr-grammar-card_link" data-action="editor" data-grammarly-reactid=".1.4.0">Correct with Grammarly</div><div class="gr-grammar-card_btn-close gr-grammar-card_ignore" data-action="ignore" data-grammarly-reactid=".1.4.2">Ignore</div></div></div></grammarly-card></html>
